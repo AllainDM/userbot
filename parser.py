@@ -1,15 +1,17 @@
 import requests
-import config
-import time
-from bs4 import BeautifulSoup
 from datetime import datetime
+
+from bs4 import BeautifulSoup
+
+import config
+import main
 # from main import bot_answer
 
 session = requests.Session()
 
 url_login = "http://us.gblnet.net/oper/"
-url_filter = "http://us.gblnet.net/oper/?core_section=task_list&filter_selector0=task_state&task_state0_value=1&filter_" \
-       "selector1=task_staff&employee_find_input=&employee_id1=877"
+url_with_filter = "http://us.gblnet.net/oper/?core_section=task_list&filter_selector0=task_state&task_state0_value=" \
+                  "1&filter_selector1=task_staff&employee_find_input=&employee_id1=877"
 url_link_repair = "http://us.gblnet.net/oper/?core_section=task&action=show&id="
 
 HEADERS = {
@@ -43,12 +45,14 @@ def get_html(url):
     # global old_answer # Сохраним ответ глобально, для возможности повторной отправки
     answer = []  # Ответ боту
     if html.status_code == 200:
+        # try:
         soup = BeautifulSoup(html.text, 'lxml')
         new_list_repairs_id = []  # Сюда запишем список всех найденных ремонтов, список будет считаться как новый
         table = soup.find_all('tr', class_="cursor_pointer")
+        # print(table[0])
         a = 0  # Счетчик количества заявок, для теста
         # Ищем все ссылки в которых в описании номер ремонта
-        # Создаем список номеров ремонтов
+        # Создаём список номеров ремонтов
         for i in table:  # Цикл по списку всей таблицы
             list_a = i.find_all('a')  # Ищем ссылки во всей таблице
             for ii in list_a:  # Цикл по найденным ссылкам
@@ -72,21 +76,53 @@ def get_html(url):
             file.close()
             # Если списки не совпали, то через цикл ищем новые ремонты
         else:
+            # answer = make_answer(table, new_list_repairs_id)
             x = 0  # Счетчик индексов новых ремонтов, предполагается, что все новые ремонты появляются вверху,
             # но бывают ремонты, появляются где-нибудь посередине
             for i_new in new_list_repairs_id:
                 if list_repairs_id.count(i_new) == 0:
                     # print(f"""Ремонт: {i_new} не найден в списке""")
-                    # Отдельный список только новых ремонтов, нужен только для лога
-                    new_repair_id.append(i_new)
-                    # list_index.append(x)  # Добавляем индекс ремонта в новом списке, что не правильно
-                    answer.append(table[x].text)
-                    answer.append(f"{url_link_repair}{i_new}")
-                    # answer.append(x)
+                    new_repair_id.append(i_new)  # Отдельный список только новых ремонтов, нужен только для лога
+                    # Далее нужно составить текст ответа для бота
+                    repair_link = url_link_repair + i_new  # Ссылка будет в конце
+                    td_class_all = table[x].find_all('td', class_="")
+                    print(td_class_all)
+                    td_class_div_center_all = table[x].find_all('td', class_="div_center")
+                    data_repair = td_class_div_center_all[1]
+                    # print(f"""data_repair_all: {data_repair}""")
+                    # print(f"""data_repair: {data_repair}""")
+
+                    address_repair = td_class_all[0]
+                    # print(f"""address_repair: {address_repair.text}""")
+                    # print(f"""address_repair: {address_repair}""")
+
+                    mission_repair = td_class_all[1].b
+                    # print(f"""mission_repair: {mission_repair.text}""")
+
+                    comment_repair = table[x].find_all('div', class_="div_journal_opis")
+                    print(comment_repair)
+
+                    # Комментария может не быть, поэтому делаем проверку
+                    if len(comment_repair) > 0:
+                        # print(f"""comment_repair: {comment_repair}""")
+                        # print(f"""comment_repair: {comment_repair[0]}""")
+                        # print(f"""comment_repair: {comment_repair[0].text}""")
+                        comment_repair = comment_repair[0].text
+                    else:  # Если коммента нет создаем пустую строку
+                        comment_repair = " "
+
+                    one_repair_text = f"""{mission_repair.text}
+                                                        {address_repair.text}
+                                                        {data_repair.text}
+                                                        {comment_repair}
+                                                        {repair_link}"""
+                    answer.append(one_repair_text)
                 x += 1
             answer.reverse()
+            # Обновим список ремонтов в файлике, для его прочтения при перезапуске бота
+            # !!!!!! Отключу запись временно для теста скорости. На скорость не влияет
+            # Так же отключаю для теста редактирования вывода текста бота, чтоб выводить всегда старые ремонты
             h = " ".join(new_list_repairs_id)
-            # h = string.join(iterable)
             file = open("list.txt", "w")
             file.write(h)
             file.close()
@@ -101,9 +137,21 @@ def get_html(url):
             file.write(f"{datetime.now()}: Список новых ремонтов: {new_repair_id} \n")
             file.close()
         return answer
+        # except IndexError as e:
+        #     main.send_telegram(f"""Ошибка с парсером: {e}""")
+        #     print(f"{datetime.now()}: Ошибка с парсером: {e}")
+        #     file = open("logs.txt", "a")
+        #     file.write(f"{datetime.now()}: Ошибка с парсером: {e} \n")
+        #     file.close()
     else:
         print("error")
 
 
+def make_answer(table, new_list_repairs_id):
+    answer = []
+
+    return answer
+
+
 def bot_start():
-    return get_html(url_filter)
+    return get_html(url_with_filter)
