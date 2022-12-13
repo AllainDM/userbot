@@ -1,11 +1,20 @@
 from datetime import datetime
 import requests
 import os
+import logging
 import time
+
 from aiogram import Bot, Dispatcher, executor, types
+
 import parser
 import config
 
+logging.basicConfig(level=logging.INFO, filename="log.log", filemode="w")
+logging.debug("A DEBUG Message")
+logging.info("An INFO")
+logging.warning("A WARNING")
+logging.error("An ERROR")
+logging.critical("A message of CRITICAL severity")
 
 # bot_answer = False  # Получили ли мы ответ в последний раз
 

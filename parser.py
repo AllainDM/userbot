@@ -49,6 +49,7 @@ def get_html(url):
         soup = BeautifulSoup(html.text, 'lxml')
         new_list_repairs_id = []  # Сюда запишем список всех найденных ремонтов, список будет считаться как новый
         table = soup.find_all('tr', class_="cursor_pointer")
+        # print(table[0])
         a = 0  # Счетчик количества заявок, для теста
         # Ищем все ссылки в которых в описании номер ремонта
         # Создаём список номеров ремонтов
@@ -85,19 +86,21 @@ def get_html(url):
                     # Далее нужно составить текст ответа для бота
                     repair_link = url_link_repair + i_new  # Ссылка будет в конце
                     td_class_all = table[x].find_all('td', class_="")
+                    print(td_class_all)
                     td_class_div_center_all = table[x].find_all('td', class_="div_center")
                     data_repair = td_class_div_center_all[1]
                     # print(f"""data_repair_all: {data_repair}""")
                     # print(f"""data_repair: {data_repair}""")
 
-                    address_repair = td_class_all[4]
+                    address_repair = td_class_all[0]
                     # print(f"""address_repair: {address_repair.text}""")
                     # print(f"""address_repair: {address_repair}""")
 
-                    mission_repair = td_class_all[5].b
+                    mission_repair = td_class_all[1].b
                     # print(f"""mission_repair: {mission_repair.text}""")
 
                     comment_repair = table[x].find_all('div', class_="div_journal_opis")
+                    print(comment_repair)
 
                     # Комментария может не быть, поэтому делаем проверку
                     if len(comment_repair) > 0:
