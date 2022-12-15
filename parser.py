@@ -112,8 +112,8 @@ def get_html(url):
                     else:  # Если коммента нет создаем пустую строку
                         comment_repair = " "
 
-                    one_repair_text = f"{mission_repair.text} \n\n {address_repair_text} \n\n " \
-                                      f"{data_repair.text} \n\n {comment_repair} \n\n {repair_link}"
+                    one_repair_text = f"{mission_repair.text} \n\n{address_repair_text} \n\n" \
+                                      f"{data_repair.text} \n\n{comment_repair} \n\n{repair_link}"
                     answer.append(one_repair_text)
                 x += 1
             answer.reverse()
