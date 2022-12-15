@@ -93,6 +93,7 @@ def get_html(url):
                     # print(f"""data_repair: {data_repair}""")
 
                     address_repair = td_class_all[0]
+                    address_repair_text = address_repair.text
                     # print(f"""address_repair: {address_repair.text}""")
                     # print(f"""address_repair: {address_repair}""")
 
@@ -111,11 +112,8 @@ def get_html(url):
                     else:  # Если коммента нет создаем пустую строку
                         comment_repair = " "
 
-                    one_repair_text = f"""{mission_repair.text}
-                                                        {address_repair.text}
-                                                        {data_repair.text}
-                                                        {comment_repair}
-                                                        {repair_link}"""
+                    one_repair_text = f"{mission_repair.text} \n\n {address_repair_text} \n\n " \
+                                      f"{data_repair.text} \n\n {comment_repair} \n\n {repair_link}"
                     answer.append(one_repair_text)
                 x += 1
             answer.reverse()
