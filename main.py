@@ -123,7 +123,7 @@ def main():
         # start_parsing()
         # !!!!! Отключу цикл для тестов
     while True:
-        time.sleep(10)
+        time.sleep(config.delay)
         start_parsing()
     # except e as n:
     #     send_telegram("Ошибка с таймером")
