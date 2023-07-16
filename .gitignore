@@ -1,4 +1,9 @@
-config.py
-.idea
+# ide
 __pycache__
-.gitignore
+.idea
+
+# Конфиг с паролями и ключами
+config.py
+
+# Тут черновые записи и старые файлы
+old.txt

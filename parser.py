@@ -1,13 +1,22 @@
-import requests
 from datetime import datetime
 
+import requests
 from bs4 import BeautifulSoup
 
 import config
-import main
-# from main import bot_answer
 
 session = requests.Session()
+
+filter_to_chat = ["Адмиралтейский р-н",
+                  "Московский р-н",
+                  "Кировский р-н",
+                  "Фрунзенский р-н"]
+
+filter_to_ls = ["Центральный р-н",
+                "Адмиралтейский р-н",
+                "Московский р-н",
+                "Кировский р-н",
+                "Фрунзенский р-н"]
 
 url_login = "http://us.gblnet.net/oper/"
 url_with_filter = "http://us.gblnet.net/oper/?core_section=task_list&filter_selector0=task_state&task_state0_value=" \
@@ -77,7 +86,6 @@ def get_html(url):
             file.close()
             # Если списки не совпали, то через цикл ищем новые ремонты
         else:
-            # answer = make_answer(table, new_list_repairs_id)
             x = 0  # Счетчик индексов новых ремонтов, предполагается, что все новые ремонты появляются вверху,
             # но бывают ремонты, появляются где-нибудь посередине
             for i_new in new_list_repairs_id:
@@ -115,7 +123,17 @@ def get_html(url):
 
                     one_repair_text = f"{mission_repair.text} \n\n{address_repair_text} \n\n" \
                                       f"{data_repair.text} \n\n{comment_repair} \n\n{repair_link}"
-                    answer.append(one_repair_text)
+                    # Фильтр для отправки по районам
+                    district = address_repair_text.split(",")
+                    try:
+                        district = district[2]
+                        district = district.strip()
+                        print(f"Район: {district}")
+                        if district in filter_to_chat:
+                            answer.append(one_repair_text)
+                    except IndexError:
+                        print("Тут возможно белая заявка")
+                        answer.append(one_repair_text)
                 x += 1
             answer.reverse()
             # Обновим список ремонтов в файлике, для его прочтения при перезапуске бота
@@ -144,12 +162,6 @@ def get_html(url):
         #     file.close()
     else:
         print("error")
-
-
-def make_answer(table, new_list_repairs_id):
-    answer = []
-
-    return answer
 
 
 def bot_start():
