@@ -107,7 +107,8 @@ def format_text():
 
 
 def main():
-    send_telegram("Бот запущен")
+    send_telegram_admiral("Бот запущен")
+    send_telegram_centre("Бот запущен")
     start_parsing()
     while True:
         time.sleep(config.delay)
