@@ -28,11 +28,8 @@ def start_parsing():
     # 0 индекс Адмирал
     try:
         if len(mes[0]) > 0:
-            x = 0
-            for i in mes:
-                # TODO тут наверное надо не mes[x], а просто i
-                send_telegram_admiral(mes[x])
-                x += 1
+            for i in mes[0]:
+                send_telegram_admiral(i)
         else:
             print(f"{datetime.now()}: Новых ремонтов нет")
             file = open("logs.txt", "a")
@@ -48,7 +45,7 @@ def start_parsing():
     # 1 индекс Центр
     try:
         if len(mes[1]) > 0:
-            for i in mes:
+            for i in mes[1]:
                 send_telegram_centre(i)
         else:
             print(f"{datetime.now()}: Новых ремонтов нет")
