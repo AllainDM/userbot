@@ -7,10 +7,10 @@ import config
 
 session = requests.Session()
 
-filter_to_chat = ["Адмиралтейский р-н",
-                  "Московский р-н",
-                  "Кировский р-н",
-                  "Фрунзенский р-н"]
+filter_to_chat_admiral = ["Адмиралтейский р-н",
+                          "Московский р-н",
+                          "Кировский р-н",
+                          "Фрунзенский р-н"]
 
 filter_to_ls = ["Центральный р-н",
                 "Адмиралтейский р-н",
@@ -52,7 +52,10 @@ def get_html(url):
     global list_repairs_id
     new_repair_id = []  # Список ид новых ремонтов
     # global old_answer # Сохраним ответ глобально, для возможности повторной отправки
-    answer = []  # Ответ боту
+    # Ответ боту сделаем из нескольких списков, под каждый условный район
+    # 0 индекс Адмирал
+    # 1 индекс Центр
+    answer = [[], []]  # Ответ боту
     if html.status_code == 200:
         # try:
         soup = BeautifulSoup(html.text, 'lxml')
@@ -129,13 +132,18 @@ def get_html(url):
                         district = district[2]
                         district = district.strip()
                         print(f"Район: {district}")
-                        if district in filter_to_chat:
-                            answer.append(one_repair_text)
+                        if district in filter_to_chat_admiral:
+                            answer[0].append(one_repair_text)
+                        elif district == "Центральный р-н":
+                            answer[1].append(one_repair_text)
+
                     except IndexError:
                         print("Тут возможно белая заявка")
-                        answer.append(one_repair_text)
+                        answer[0].append(one_repair_text)
+                        answer[1].append(one_repair_text)
                 x += 1
-            answer.reverse()
+            answer[0].reverse()
+            answer[1].reverse()
             # Обновим список ремонтов в файлике, для его прочтения при перезапуске бота
             # !!!!!! Отключу запись временно для теста скорости. На скорость не влияет
             # Так же отключаю для теста редактирования вывода текста бота, чтоб выводить всегда старые ремонты

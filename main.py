@@ -24,14 +24,14 @@ async def echo_mess(message: types.Message):
 
 def start_parsing():
     mes = parser.bot_start()
+    # Ответ приходит в виде списка списков, под каждый район
+    # 0 индекс Адмирал
     try:
-        if len(mes) > 0:
-            # await bot.send_message(message.chat.id, f"Ответ: {mes}")
+        if len(mes[0]) > 0:
             x = 0
             for i in mes:
-                # await bot.send_message(message.chat.id, f"Ответ: {mes[x]}")
                 # TODO тут наверное надо не mes[x], а просто i
-                send_telegram(mes[x])
+                send_telegram_admiral(mes[x])
                 x += 1
         else:
             print(f"{datetime.now()}: Новых ремонтов нет")
@@ -43,14 +43,50 @@ def start_parsing():
         file = open("logs.txt", "a")
         file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
         file.close()
-        send_telegram(f"Ответ: Ошибка с получением ответа от парсера")
+        send_telegram_admiral(f"Ответ: Ошибка с получением ответа от парсера")
+
+    # 1 индекс Центр
+    try:
+        if len(mes[1]) > 0:
+            for i in mes:
+                send_telegram_centre(i)
+        else:
+            print(f"{datetime.now()}: Новых ремонтов нет")
+            file = open("logs.txt", "a")
+            file.write(f"{datetime.now()}: Новых ремонтов нет \n")
+            file.close()
+    except:
+        print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+        file = open("logs.txt", "a")
+        file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+        file.close()
+        send_telegram_centre(f"Ответ: Ошибка с получением ответа от парсера")
 
 
-def send_telegram(text_to_bot):
+def send_telegram_admiral(text_to_bot):
     # text = format_text(offer)
     url = f'https://api.telegram.org/bot{config.BOT_API_TOKEN}/sendMessage'
     data_to_chat = {
         'chat_id': config.chat_id,
+        'text': text_to_bot,
+        'parse_mode': 'HTML'
+    }
+    requests.post(url=url, data=data_to_chat)
+
+    # Доп сообщение в личку юзеру отключено. На тесте телеграмм банил из-за большого количества запросов
+    if config.send_to_telegram_user:
+        data_to_user = {
+            'chat_id': config.user_id,
+            'text': text_to_bot,
+            'parse_mode': 'HTML'
+        }
+        requests.post(url=url, data=data_to_user)
+
+
+def send_telegram_centre(text_to_bot):
+    url = f'https://api.telegram.org/bot{config.BOT_API_TOKEN}/sendMessage'
+    data_to_chat = {
+        'chat_id': config.chat_id_for_centre,
         'text': text_to_bot,
         'parse_mode': 'HTML'
     }
@@ -79,5 +115,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # executor.start_polling(dp) # Вариант для эхо-бота, для тестов
+    # executor.start_polling(dp)  # Вариант для эхо-бота, для тестов
     main()
