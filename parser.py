@@ -8,10 +8,12 @@ import config
 
 session = requests.Session()
 
-filter_to_chat_admiral = ["Адмиралтейский р-н",
-                          "Московский р-н",
-                          "Кировский р-н",
-                          "Фрунзенский р-н"]
+filter_to_chat_new_admiral = ["Адмиралтейский р-н",
+                              "Московский р-н",
+                              "Фрунзенский р-н"]
+
+filter_to_chat_old_admiral = ["Адмиралтейский р-н",
+                              "Кировский р-н"]
 
 filter_to_ls = ["Центральный р-н",
                 "Адмиралтейский р-н",
@@ -150,18 +152,27 @@ def get_html(url):
                             district = district[2]
                             district = district.strip()
                             print(f"Район: {district}")
-                            if district in filter_to_chat_admiral:
+                            # Сначала посмотрим Адмиралтейский и отберем "Старый Адмирал"
+                            if district == "Адмиралтейский р-н":
+                                if get_old_admiral(one_repair_text):
+                                    answer[0].append(one_repair_text)
+                                else:
+                                    answer[2].append(one_repair_text)
+                            elif district in filter_to_chat_old_admiral:
                                 answer[0].append(one_repair_text)
+                            elif district in filter_to_chat_new_admiral:
+                                answer[2].append(one_repair_text)
                             elif district == "Центральный р-н":
                                 answer[1].append(one_repair_text)
 
                         except IndexError:
                             print("Тут возможно белая заявка")
-                            answer[0].append(one_repair_text)
-                            answer[1].append(one_repair_text)
+                            answer[3].append(one_repair_text)
                     x += 1
                 answer[0].reverse()
                 answer[1].reverse()
+                answer[2].reverse()
+                answer[3].reverse()
                 # Обновим список ремонтов в файлике, для его прочтения при перезапуске бота
                 # !!!!!! Отключу запись временно для теста скорости. На скорость не влияет
                 # Так же отключаю для теста редактирования вывода текста бота, чтоб выводить всегда старые ремонты
@@ -190,6 +201,20 @@ def get_html(url):
             print("error")
     except:
         create_sessions()
+
+
+# Получим "Старый Адмирал"
+def get_old_admiral(all_answer):
+    for i in all_answer:
+        if i.find("Парфеновская") != -1:
+            print("Парфеновская")
+        elif i.find("Измайловский") != -1:
+            print("Измайловский")
+        elif i.find("Малая Митрофаньевская") != -1:
+            print("Малая Митрофаньевская")
+        else:
+            return True
+    return False
 
 
 def bot_start():
