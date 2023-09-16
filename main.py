@@ -61,7 +61,7 @@ def start_parsing():
 
     # 2 индекс Адмирал новый
     try:
-        if len(mes[0]) > 0:
+        if len(mes[2]) > 0:
             for i in mes[0]:
                 send_telegram_new_admiral(i)
         else:
@@ -78,7 +78,7 @@ def start_parsing():
 
     # 3 Подключить быстрее
     try:
-        if len(mes[0]) > 0:
+        if len(mes[3]) > 0:
             for i in mes[0]:
                 send_telegram_fast(i)
         else:
@@ -179,6 +179,8 @@ def format_text():
 
 def main():
     send_telegram_new_admiral("Бот запущен")
+    send_telegram_old_admiral("Бот запущен")
+    send_telegram_fast("Бот запущен")
     send_telegram_centre("Бот запущен")
     start_parsing()
     while True:
