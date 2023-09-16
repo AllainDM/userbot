@@ -64,7 +64,7 @@ def start_parsing():
         if len(mes[2]) > 0:
             for i in mes[2]:
                 # send_telegram_new_admiral(i)
-                send_telegram_old_admiral(i)
+                send_telegram_new_admiral(i)
         else:
             print(f"{datetime.now()}: Новых ремонтов нет")
             file = open("logs.txt", "a")
@@ -75,14 +75,14 @@ def start_parsing():
         file = open("logs.txt", "a")
         file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
         file.close()
-        send_telegram_old_admiral(f"Ответ: Ошибка с получением ответа от парсера")
+        send_telegram_new_admiral(f"Ответ: Ошибка с получением ответа от парсера")
 
     # 3 Подключить быстрее
     try:
         if len(mes[3]) > 0:
             for i in mes[3]:
                 # send_telegram_fast(i)
-                send_telegram_old_admiral(i)
+                send_telegram_fast(i)
         else:
             print(f"{datetime.now()}: Новых ремонтов нет")
             file = open("logs.txt", "a")
