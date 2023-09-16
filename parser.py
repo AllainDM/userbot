@@ -75,7 +75,7 @@ def get_html(url):
         # Ответ боту сделаем из нескольких списков, под каждый условный район
         # 0 индекс Адмирал
         # 1 индекс Центр
-        answer = [[], []]  # Ответ боту
+        answer = [[], [], [], []]  # Ответ боту
         if html.status_code == 200:
             # try:
             soup = BeautifulSoup(html.text, 'lxml')
