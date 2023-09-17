@@ -132,20 +132,27 @@ def get_html(url):
                         mission_repair = td_class_all[1].b
                         # print(f"""mission_repair: {mission_repair.text}""")
 
-                        comment_repair = table[x].find_all('div', class_="div_journal_opis")
-                        print(comment_repair)
+                        # comment_repair = table[x].find_all('div', class_="div_journal_opis")
+                        comment_repair = td_class_all[1]
 
                         # Комментария может не быть, поэтому делаем проверку
-                        if len(comment_repair) > 0:
-                            # print(f"""comment_repair: {comment_repair}""")
-                            # print(f"""comment_repair: {comment_repair[0]}""")
-                            # print(f"""comment_repair: {comment_repair[0].text}""")
-                            comment_repair = comment_repair[0].text
-                        else:  # Если коммента нет создаем пустую строку
-                            comment_repair = " "
+                        # Старый вариант, до обновления Юзера
+                        # if len(comment_repair) > 0:
+                        #     comment_repair = comment_repair[0].text
+                        # else:  # Если коммента нет создаем пустую строку
+                        #     comment_repair = " "
+                        try:
+                            # comment_repair = comment_repair.split("<br/>")
+                            # comment_repair = comment_repair.get_text('/n', strip="True")
+                            description = comment_repair.text
+                            print(f"""description232: {comment_repair.text}""")
+                        except AttributeError:
+                            description = "Описания нет"
+
+                        print(f"""description123: {description}""")
 
                         one_repair_text = f"{mission_repair.text} \n\n{address_repair_text} \n\n" \
-                                          f"{data_repair.text} \n\n{comment_repair} \n\n{repair_link}"
+                                          f"{data_repair.text} \n\n{description} \n\n{repair_link}"
                         # Фильтр для отправки по районам
                         district = address_repair_text.split(",")
                         try:
@@ -213,8 +220,8 @@ def get_old_admiral(all_answer):
         elif i.find("Малая Митрофаньевская") != -1:
             print("Малая Митрофаньевская")
         else:
-            return True
-    return False
+            return False
+    return True
 
 
 def bot_start():
