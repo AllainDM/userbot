@@ -26,74 +26,74 @@ def start_parsing():
     mes = parser.bot_start()
     # Ответ приходит в виде списка списков, под каждый район
     # 0 индекс Адмирал
-    try:
-        if len(mes[0]) > 0:
-            for i in mes[0]:
-                send_telegram_old_admiral(i)
-        else:
-            print(f"{datetime.now()}: Новых ремонтов нет")
-            file = open("logs.txt", "a")
-            file.write(f"{datetime.now()}: Новых ремонтов нет \n")
-            file.close()
-    except:
-        print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    # try:
+    if len(mes[0]) > 0:
+        for i in mes[0]:
+            send_telegram_old_admiral(i)
+    else:
+        print(f"{datetime.now()}: Новых ремонтов нет")
         file = open("logs.txt", "a")
-        file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+        file.write(f"{datetime.now()}: Новых ремонтов нет \n")
         file.close()
-        send_telegram_old_admiral(f"Ответ: Ошибка с получением ответа от парсера")
+    # except:
+    #     print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    #     file = open("logs.txt", "a")
+    #     file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+    #     file.close()
+    #     send_telegram_old_admiral(f"Ответ: Ошибка с получением ответа от парсера")
 
     # 1 индекс Центр
-    try:
-        if len(mes[1]) > 0:
-            for i in mes[1]:
-                send_telegram_centre(i)
-        else:
-            print(f"{datetime.now()}: Новых ремонтов нет")
-            file = open("logs.txt", "a")
-            file.write(f"{datetime.now()}: Новых ремонтов нет \n")
-            file.close()
-    except:
-        print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    # try:
+    if len(mes[1]) > 0:
+        for i in mes[1]:
+            send_telegram_centre(i)
+    else:
+        print(f"{datetime.now()}: Новых ремонтов нет")
         file = open("logs.txt", "a")
-        file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+        file.write(f"{datetime.now()}: Новых ремонтов нет \n")
         file.close()
-        send_telegram_centre(f"Ответ: Ошибка с получением ответа от парсера")
+    # except:
+    #     print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    #     file = open("logs.txt", "a")
+    #     file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+    #     file.close()
+    #     send_telegram_centre(f"Ответ: Ошибка с получением ответа от парсера")
 
     # 2 индекс Адмирал новый
-    try:
-        if len(mes[2]) > 0:
-            for i in mes[2]:
-                # send_telegram_new_admiral(i)
-                send_telegram_new_admiral(i)
-        else:
-            print(f"{datetime.now()}: Новых ремонтов нет")
-            file = open("logs.txt", "a")
-            file.write(f"{datetime.now()}: Новых ремонтов нет \n")
-            file.close()
-    except:
-        print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    # try:
+    if len(mes[2]) > 0:
+        for i in mes[2]:
+            # send_telegram_new_admiral(i)
+            send_telegram_new_admiral(i)
+    else:
+        print(f"{datetime.now()}: Новых ремонтов нет")
         file = open("logs.txt", "a")
-        file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+        file.write(f"{datetime.now()}: Новых ремонтов нет \n")
         file.close()
-        send_telegram_new_admiral(f"Ответ: Ошибка с получением ответа от парсера")
+    # except:
+    #     print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    #     file = open("logs.txt", "a")
+    #     file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+    #     file.close()
+    #     send_telegram_new_admiral(f"Ответ: Ошибка с получением ответа от парсера")
 
     # 3 Подключить быстрее
-    try:
-        if len(mes[3]) > 0:
-            for i in mes[3]:
-                # send_telegram_fast(i)
-                send_telegram_fast(i)
-        else:
-            print(f"{datetime.now()}: Новых ремонтов нет")
-            file = open("logs.txt", "a")
-            file.write(f"{datetime.now()}: Новых ремонтов нет \n")
-            file.close()
-    except:
-        print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    # try:
+    if len(mes[3]) > 0:
+        for i in mes[3]:
+            # send_telegram_fast(i)
+            send_telegram_fast(i)
+    else:
+        print(f"{datetime.now()}: Новых ремонтов нет")
         file = open("logs.txt", "a")
-        file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+        file.write(f"{datetime.now()}: Новых ремонтов нет \n")
         file.close()
-        send_telegram_fast(f"Ответ: Ошибка с получением ответа от парсера")
+    # except:
+    #     print(f"{datetime.now()}: Ошибка с получением ответа от парсера")
+    #     file = open("logs.txt", "a")
+    #     file.write(f"{datetime.now()}: Ошибка с получением ответа от парсера \n")
+    #     file.close()
+    #     send_telegram_fast(f"Ответ: Ошибка с получением ответа от парсера")
 
 
 def send_telegram_new_admiral(text_to_bot):
