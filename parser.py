@@ -126,6 +126,17 @@ def get_html(url):
 
                         address_repair = td_class_all[0]
                         address_repair_text = address_repair.text
+                        address_split = address_repair_text.split(" ")
+                        # Сделаем срез уберем страну и город
+                        address_split = address_split[2:]
+                        address_msg = ""
+                        # for num, value in enumerate(address_split):
+                        for i in address_split:
+                            if i != '':
+                                address_msg += i
+                                address_msg += " "
+                            else:
+                                break
                         # print(f"""address_repair: {address_repair.text}""")
                         # print(f"""address_repair: {address_repair}""")
 
@@ -151,7 +162,7 @@ def get_html(url):
 
                         print(f"""description123: {description}""")
 
-                        one_repair_text = f"{mission_repair.text} \n\n{address_repair_text} \n\n" \
+                        one_repair_text = f"{mission_repair.text} \n\n{address_msg} \n\n" \
                                           f"{data_repair.text} \n\n{description} \n\n{repair_link}"
                         # Фильтр для отправки по районам
                         district = address_repair_text.split(",")
