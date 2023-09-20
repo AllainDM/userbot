@@ -172,14 +172,16 @@ def get_html(url):
                             print(f"Район: {district}")
                             # Сначала посмотрим Адмиралтейский и отберем "Старый Адмирал"
                             if district == "Адмиралтейский р-н":
-                                if get_old_admiral(one_repair_text):
-                                    answer[0].append(one_repair_text)
-                                else:
+                                if get_new_admiral(one_repair_text):
                                     answer[2].append(one_repair_text)
-                            elif district in filter_to_chat_old_admiral:
-                                answer[0].append(one_repair_text)
-                            elif district in filter_to_chat_new_admiral:
+                                else:
+                                    answer[0].append(one_repair_text)
+                            elif district == "Московский р-н":
                                 answer[2].append(one_repair_text)
+                            elif district == "Фрунзенский р-н":
+                                answer[2].append(one_repair_text)
+                            elif district == "Кировский р-н":
+                                answer[0].append(one_repair_text)
                             elif district == "Центральный р-н":
                                 answer[1].append(one_repair_text)
 
@@ -222,17 +224,17 @@ def get_html(url):
 
 
 # Получим "Старый Адмирал"
-def get_old_admiral(all_answer):
+def get_new_admiral(all_answer):
     for i in all_answer:
-        if i.find("Парфеновская") != -1:
+        if i.find("Парфеновская") != -1 or i.find("Измайловский") != -1 or i.find("Малая Митрофаньевская") != -1:
             print("Парфеновская")
-        elif i.find("Измайловский") != -1:
-            print("Измайловский")
-        elif i.find("Малая Митрофаньевская") != -1:
-            print("Малая Митрофаньевская")
-        else:
-            return False
-    return True
+        # elif i.find("Измайловский") != -1:
+        #     print("Измайловский")
+        # elif i.find("Малая Митрофаньевская") != -1:
+        #     print("Малая Митрофаньевская")
+        # else:
+            return True
+    return False
 
 
 def bot_start():
