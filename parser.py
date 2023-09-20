@@ -171,11 +171,13 @@ def get_html(url):
                             district = district.strip()
                             print(f"Район: {district}")
                             # Сначала посмотрим Адмиралтейский и отберем "Старый Адмирал"
-                            if district == "Адмиралтейский р-н":
-                                if get_new_admiral(one_repair_text):
-                                    answer[2].append(one_repair_text)
-                                else:
-                                    answer[0].append(one_repair_text)
+                            if district == "Адмиралтейский р-н" and get_new_admiral(one_repair_text):
+                                # if get_new_admiral(one_repair_text):
+                                answer[2].append(one_repair_text)
+                                # else:
+                                #     answer[0].append(one_repair_text)
+                            elif district == "Адмиралтейский р-н":
+                                answer[0].append(one_repair_text)
                             elif district == "Московский р-н":
                                 answer[2].append(one_repair_text)
                             elif district == "Фрунзенский р-н":
@@ -227,7 +229,7 @@ def get_html(url):
 def get_new_admiral(all_answer):
     for i in all_answer:
         if i.find("Парфеновская") != -1 or i.find("Измайловский") != -1 or i.find("Малая Митрофаньевская") != -1:
-            print("Парфеновская")
+            # print("Парфеновская")
         # elif i.find("Измайловский") != -1:
         #     print("Измайловский")
         # elif i.find("Малая Митрофаньевская") != -1:
