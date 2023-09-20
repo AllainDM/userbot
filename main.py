@@ -180,10 +180,10 @@ def format_text():
 
 
 def main():
-    send_telegram_new_admiral("Бот запущен")
-    send_telegram_old_admiral("Бот запущен")
-    send_telegram_fast("Бот запущен")
-    send_telegram_centre("Бот запущен")
+    # send_telegram_new_admiral("Бот запущен")
+    # send_telegram_old_admiral("Бот запущен")
+    # send_telegram_fast("Бот запущен")
+    # send_telegram_centre("Бот запущен")
     start_parsing()
     while True:
         time.sleep(config.delay)

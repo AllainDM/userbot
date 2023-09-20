@@ -226,17 +226,12 @@ def get_html(url):
 
 
 # Получим "Старый Адмирал"
-def get_new_admiral(all_answer):
-    for i in all_answer:
-        if i.find("Парфеновская") != -1 or i.find("Измайловский") != -1 or i.find("Малая Митрофаньевская") != -1:
-            # print("Парфеновская")
-        # elif i.find("Измайловский") != -1:
-        #     print("Измайловский")
-        # elif i.find("Малая Митрофаньевская") != -1:
-        #     print("Малая Митрофаньевская")
-        # else:
-            return True
-    return False
+def get_new_admiral(i):
+    # for i in all_answer:
+    if i.find("Парфеновская") != -1 or i.find("Измайловский") != -1 or i.find("Малая Митрофаньевская") != -1:
+        return True
+    else:
+        return False
 
 
 def bot_start():
